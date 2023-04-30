@@ -10,13 +10,27 @@ const markup = galleryItems
 gallery.insertAdjacentHTML('beforeend', markup);
 gallery.addEventListener('click', event => {
   event.preventDefault();
+  // const instance = basicLightbox.create(`
+  //   <img src="${event.target.dataset.source}" width="800" height="600">`);
+  // instance.show();
+  // gallery.addEventListener('keydown', event => {
+  //   if (event.code === 'Escape') instance.close();
+  // });
+  // gallery.removeEventListener('keydown', event => {
+  //   if (event.code === 'Escape') instance.close();
+  // });
   const instance = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">`);
-  instance.show();
-  gallery.addEventListener('keydown', event => {
-    if (event.code === 'Escape') instance.close();
-  });
-  gallery.removeEventListener('keydown', event => {
-    if (event.code === 'Escape') instance.close();
+  //   <img src="${event.target.dataset.source}" width="800" height="600">`, 
+  {
+    onShow: (instance) => {
+      window.addEventListener('keydown', onEscKeyPress);
+    },
+    onClose: (instance) => {
+      window.removeEventListener('keydown', onEscKeyPress);
+    },
   })
+  
 });
+function onEscKeyPress(event) {
+  if (event.code === 'Escape') instance.close();
+}
